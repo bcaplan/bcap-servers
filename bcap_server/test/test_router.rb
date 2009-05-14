@@ -30,7 +30,7 @@ class TestRouter < Test::Unit::TestCase
     called = false
     BcapServer::Router.register '/time' do |request, response|
       called = true
-      response.body = ''
+      response.body = 'body'
     end
 
     io = StringIO.new("GET /time HTTP/1.0\r\n\r\n")
@@ -58,5 +58,19 @@ class TestRouter < Test::Unit::TestCase
     assert response.include?('Content-Type: text/html'), "should have content type header"
 
     assert response.include?(body), "should have body"
+  end
+  
+  def test_renders_500_on_rescue
+    BcapServer::Router.register '/raise' do |request, response|
+      raise
+    end
+    
+    io = StringIO.new("GET /raise HTTP/1.0\r\n\r\n")
+    
+    @router.accept(io)
+    
+    response = io.string.split("\r\n")
+    assert response.include?('Content-Type: text/html'), "should have content type header"
+    assert response.include?('HTTP/0.9 500 Internal Server Error'), 'should have 500 status'
   end
 end

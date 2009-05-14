@@ -7,13 +7,19 @@ module BcapServer
       request = Request.new io
       response = Response.new
       path = request.path
-      
-      if SERVLETS.key? path
-        SERVLETS[path].call request, response
+      begin
+        if SERVLETS.key? path
+          SERVLETS[path].call request, response
 
+          output = response
+        else
+          output = handle_file(path, response)
+        end
+      rescue => detail
+        response.status = 500
+        response.headers['Content-Type'] = 'text/html'
+        response.body = "<html><body><h1>500 Internal Server Error</h1><p><h2>Backtrace:</h2>#{detail.backtrace.join("<br />")}</p></body></html>"
         output = response
-      else
-        output = handle_file(path, response)
       end
       output.write_to io
     end
@@ -39,8 +45,25 @@ module BcapServer
   end
 end
 
-# BcapServer::Router.register '/time' do |request, response|
-#   response.status = 200
-#   response.headers['Content-Type'] = 'text/html'
-#   response.body = "<html><body><h1>#{Time.now}</h1></body></html>"
-# end
+BcapServer::Router.register '/time' do |request, response|
+  response.status = 200
+  response.headers['Content-Type'] = 'text/html'
+  response.body = "<html><body><h1>#{Time.now}</h1></body></html>"
+end
+
+BcapServer::Router.register '/list' do |request, response|
+  entries = ""
+  Dir.foreach(Dir.pwd) do |entry|
+    next if entry =~ /^\./
+    if File.directory? entry
+      entries += "#{entry}/<br />"
+    else
+      entries += "#{entry}<br />"
+    end
+  end
+
+  response.status = 200
+  response.headers['Content-Type'] = 'text/html'
+  response.body = "<html><body><p>#{entries}</p></body></html>"
+end
+
