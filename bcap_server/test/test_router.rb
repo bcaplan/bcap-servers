@@ -9,16 +9,28 @@ class TestRouter < Test::Unit::TestCase
     io = StringIO.new("GET /asdfadsfadf HTTP/1.0\r\n\r\n")
     @router.accept(io)
 
-    response = io.read.split("\r\n")
-    assert response.include?('404 Not Found'), 'should have 404 status'
+    response = io.string.split("\r\n")
+    assert response.include?('HTTP/0.9 404 Not Found'), 'should have 404 status'
     assert response.include?('Content-Type: text/html'), "should have content type header"
-    assert response.include?(body)    
+    assert response.include?('<html><body><h1>404 Could not find /asdfadsfadf</h1></body></html>')    
+  end
+
+  def test_responds_with_file_if_it_exists
+    io = StringIO.new("GET /test/#{File.basename(__FILE__)} HTTP/1.0\r\n\r\n")
+    @router.accept(io)
+
+    response = io.string.split("\r\n")
+    assert response.include?('HTTP/0.9 200 OK'), 'should have 200 status'
+    assert response.include?('Content-Type: text/plain'), "should have content type header"
+    assert response.include?(File.read(__FILE__)), "should have body of this test file"
+    
   end
 
   def test_routes_a_proc
     called = false
     BcapServer::Router.register '/time' do |request, response|
       called = true
+      response.body = ''
     end
 
     io = StringIO.new("GET /time HTTP/1.0\r\n\r\n")
@@ -42,9 +54,9 @@ class TestRouter < Test::Unit::TestCase
 
     assert called, "our proc should have been called"
 
-
-    response = io.read.split("\r\n")
+    response = io.string.split("\r\n")
     assert response.include?('Content-Type: text/html'), "should have content type header"
-    assert response.include?(body)
+
+    assert response.include?(body), "should have body"
   end
 end

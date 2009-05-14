@@ -2,7 +2,6 @@ module BcapServer
   class Request
     attr_reader :method, :path
 
-    
     def initialize io
       @io = io
       @method = nil
@@ -12,12 +11,16 @@ module BcapServer
 
     def parse_input io = @io
       io.each_line do |line|
+
         break if line == "\r\n"
+
         unless @method && @path
           parsed = line.split(' ')
+
           @method = parsed[0]
           @path   = parsed[1]
         end
+
       end
     end
 
