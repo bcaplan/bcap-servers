@@ -17,9 +17,11 @@ module BcapServer
     
     def write_to io
       io.write "#{HTTP_VERSION} #{@status} #{STATUS_CODES[@status]}\r\n"
+
       @headers.each do |key, value|
         io.write "#{key}: #{value}\r\n"
       end
+
       io.write "Content-Length: #{@body.size}\r\n\r\n#{@body}"
     end
   end

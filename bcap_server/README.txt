@@ -4,7 +4,7 @@
 
 == DESCRIPTION:
 
-FIX (describe your package)
+HTTP server that has a GServer and TCPServer front end
 
 == FEATURES/PROBLEMS:
 
