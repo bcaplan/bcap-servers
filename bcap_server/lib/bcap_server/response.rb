@@ -22,7 +22,7 @@ module BcapServer
         io.write "#{key}: #{value}\r\n"
       end
 
-      io.write "Content-Length: #{@body.size}\r\n\r\n#{@body}"
+      io.write "Content-Length: #{@body.size}\r\n\r\n#{@body}" unless @body.nil?
     end
   end
 
