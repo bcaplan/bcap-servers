@@ -6,7 +6,7 @@ module BcapServer
     def accept io
       request = Request.new io
       response = Response.new
-      path = request.path
+      path = request.path.downcase
       begin
         if SERVLETS.key? path
           SERVLETS[path].call request, response
@@ -84,7 +84,7 @@ module BcapServer
     end
 
     def self.register path, &block
-      SERVLETS[path] = block
+      SERVLETS[path.downcase] = block
     end
 
   end

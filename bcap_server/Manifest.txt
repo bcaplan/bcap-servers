@@ -3,5 +3,14 @@ Manifest.txt
 README.txt
 Rakefile
 bin/bcap_server
+lib/bcap_gserver.rb
 lib/bcap_server.rb
-test/test_bcap_server.rb
+lib/bcap_server/request.rb
+lib/bcap_server/response.rb
+lib/bcap_server/router.rb
+lib/bcap_server/servlets.rb
+lib/bcap_tcpserver.rb
+test/helper.rb
+test/test_request.rb
+test/test_response.rb
+test/test_router.rb

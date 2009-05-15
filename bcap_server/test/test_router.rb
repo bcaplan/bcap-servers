@@ -54,6 +54,19 @@ class TestRouter < Test::Unit::TestCase
     assert called, "our proc should have been called"
   end
 
+  def test_routes_are_case_insensitive
+    called = false
+    BcapServer::Router.register '/time' do |request, response|
+      called = true
+      response.body = 'body'
+    end
+
+    io = StringIO.new("GET /TIME HTTP/1.0\r\n\r\n")
+    @router.accept(io)
+
+    assert called, "our proc should have been called"
+  end
+
   def test_routes_a_proc_and_renders_body
     called = false
     body = "<html><body><h1>#{Time.now}</h1></body></html>"

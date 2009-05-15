@@ -1,3 +1,5 @@
+$: << File.dirname(__FILE__)
+
 require 'bcap_server/request'
 require 'bcap_server/response'
 require 'bcap_server/router'
