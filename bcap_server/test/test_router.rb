@@ -3,11 +3,12 @@ require 'helper'
 class TestRouter < Test::Unit::TestCase
   def setup
     @router = BcapServer::Router.new
-    open('test/test.html.erb', 'w') { |f| f.write "<html><body><h1><%= 1.class %></h1></body></html>"}
+    @test_file = 'test/test.html.erb'
+    open(@test_file, 'w') { |f| f.write "<html><body><h1><%= 1.class %></h1></body></html>"}
   end
 
   def teardown
-    FileUtils.rm('test/test.html.erb') if File.exist?('test/test.html.erb')
+    FileUtils.rm(@test_file) if File.exist?(@test_file)
   end
 
   def test_404
