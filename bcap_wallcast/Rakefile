@@ -1,0 +1,12 @@
+# -*- ruby -*-
+
+require 'rubygems'
+require 'hoe'
+require './lib/bcap_wallcast.rb'
+
+Hoe.new('bcap_wallcast', BcapWallcast::VERSION) do |p|
+  # p.rubyforge_name = 'bcap_wallcastx' # if different than lowercase project name
+  p.developer('Brandon Caplan', 'maelmann@gmail.com')
+end
+
+# vim: syntax=Ruby

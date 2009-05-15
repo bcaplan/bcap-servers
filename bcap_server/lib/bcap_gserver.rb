@@ -1,3 +1,5 @@
+$: << File.dirname(__FILE__)
+
 require 'bcap_server'
 require 'gserver'
 

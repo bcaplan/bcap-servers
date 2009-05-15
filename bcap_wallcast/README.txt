@@ -1,10 +1,10 @@
-= bcap_server
+= bcap_wallcast
 
-* Brandon Caplan
+* FIX (url)
 
 == DESCRIPTION:
 
-HTTP server that has a GServer and TCPServer front end
+FIX (describe your package)
 
 == FEATURES/PROBLEMS:
 
