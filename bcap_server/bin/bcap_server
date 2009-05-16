@@ -1,3 +1,10 @@
 #!/usr/bin/env ruby
 
-abort "you need to write me"
+case ARGV[0]
+when '-t'
+  require '../lib/bcap_tcpserver'
+when '-g'
+  require '../lib/bcap_gserver'
+else
+  puts 'USAGE: bcap_server [-t for TCPServer, -g for GServer]'
+end

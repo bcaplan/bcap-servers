@@ -4,7 +4,7 @@ class TestRouter < Test::Unit::TestCase
   def setup
     @router = BcapServer::Router.new
     @test_file = 'test/test.html.erb'
-    open(@test_file, 'w') { |f| f.write "<html><body><h1><%= 1.class %></h1></body></html>"}
+    open(@test_file, 'w') { |f| f.write "<html><body><h1><%= 1.class %><% (0..2).each do |num| %><%= num %><% end %></h1></body></html>"}
   end
 
   def teardown
@@ -104,11 +104,12 @@ class TestRouter < Test::Unit::TestCase
   
   def test_renders_erb
     io = StringIO.new("GET /test/test.html.erb HTTP/1.0\r\n\r\n")
-    body = "<html><body><h1>Fixnum</h1></body></html>"
+    body = "<html><body><h1>Fixnum012</h1></body></html>"
 
     @router.accept(io)
 
     response = io.string.split("\r\n")
+
     assert response.include?('Content-Type: text/html'), "should have html content type header"
     assert response.include?(body), "should have parsed body"
   end

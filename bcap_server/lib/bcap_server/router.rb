@@ -45,11 +45,13 @@ module BcapServer
     end
 
     def handle_directory path, response
-      if File.exists?(DIR_ROOT + path)
+      expanded_path = DIR_ROOT + path
+      if File.exists?(expanded_path)
         entries = ""
-        Dir.foreach(DIR_ROOT + path) do |entry|
+        Dir.foreach(expanded_path) do |entry|
           next if entry =~ /^\./
-          if File.directory? entry
+
+          if File.directory? File.join(expanded_path, entry)
             entries << "<a href=\"#{entry}/\">#{entry}/</a><br />"
           else
             entries << "<a href=\"#{entry}\">#{entry}</a><br />"
