@@ -7,7 +7,7 @@ class BcapWallcast
   PORT= 7387
 
   def self.run
-    puts "Type to speak -- Listening..."
+    puts "Type to speak, \"exit\" or \"quit\" to leave\nListening...\n\n"
     send = Thread.new do
       user = `echo $USER`.chomp.capitalize
       begin
@@ -16,8 +16,9 @@ class BcapWallcast
         socket.send("** #{user} joined **", 0, MULTICAST_ADDR, PORT)
 
         loop do
-          message = "#{user}: #{gets.chomp}"
-          break if message =~ /exit|quit/i
+          output = gets.chomp
+          message = "#{user}: #{output}"
+          break if output =~ /^(exit|quit)$/i
           socket.send("\e[1m#{message}\e[0m", 0, MULTICAST_ADDR, PORT)
         end
         
@@ -44,5 +45,3 @@ class BcapWallcast
   end
 
 end
-
-BcapWallcast.run
