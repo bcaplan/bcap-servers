@@ -1,5 +1,4 @@
-require "test/unit"
-require "bcap_chat"
+require 'helper'
 
 class TestBcapChat < Test::Unit::TestCase
   def test_sanity

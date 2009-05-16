@@ -2,6 +2,6 @@ History.txt
 Manifest.txt
 README.txt
 Rakefile
-bin/bcap_chat
 lib/bcap_chat.rb
-test/test_bcap_chat.rb
+lib/bcap_chat/client.rb
+lib/bcap_chat/server.rb
